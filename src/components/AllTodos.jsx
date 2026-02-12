@@ -12,7 +12,7 @@ function Todos() {
           <TodoItem key={todo.id} todo={todo} />
         ))
       ) : (
-        <p className="text-gray-400">No Todos Yet</p>
+        <p className="text-gray-400 text-center">No Todos Yet</p>
       )}
     </div>
   );
