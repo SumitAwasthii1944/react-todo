@@ -6,7 +6,7 @@ function Todos() {
   const todos = useSelector((state) => state.todo.todos);
 
   return (
-    <div className="mt-8 flex flex-col gap-3 w-xl">
+    <div className="mt-8 flex flex-col gap-3 w-full">
       {todos && todos.length > 0 ? (
         todos.map((todo) => (
           <TodoItem key={todo.id} todo={todo} />

@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import Logo from '../assets/Todo-logo-transparent.png'
 export default function Footer() {
     return (
-        <footer className="bg-white border-y mb-1 fixed bottom-1 w-full">
+        <footer className="bg-white border-y mb-1 w-full">
             <div className="mx-auto w-full max-w-7xl p-4 py-6 lg:py-8">
                 <div className="md:flex md:justify-between">
                     <div className="mb-6 md:mb-0">
                         <Link to="/" className="flex items-center">
                             <img
                                 src={Logo}
-                                className="mr-3 h-30"
+                                className=" h-10 md:h-30"
                                 alt="Logo"
                             />
                         </Link>
