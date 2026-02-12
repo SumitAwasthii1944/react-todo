@@ -9,12 +9,16 @@ import {Route,createBrowserRouter,createRoutesFromElements,RouterProvider} from 
 import Home from './components/Home.jsx'
 import About from './components/About.jsx'
 import TodoPage from './components/TodoPage.jsx'
+import Login from './components/Login.jsx'
+import Signup from './components/Signup.jsx'
 
 const router= createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
         <Route path="" element={<Home />}/>
         <Route path="/todos" element={<TodoPage />}/>
+        <Route path="/signin" element={<Login/>}/>
+        <Route path="/signup" element={<Signup/>}/>
       </Route>
     )
   )
