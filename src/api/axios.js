@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8000", // your backend URL
+  baseURL: "https://backend-todo-sbg1.onrender.com", // your backend URL
 });
 
 // Automatically attach token to every request
