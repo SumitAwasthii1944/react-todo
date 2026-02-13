@@ -1,34 +1,40 @@
-import React,{memo, useEffect, useState } from "react";
-import { useDispatch} from "react-redux";
-import { updateTodo, removeTodo, toggleComplete } from "../features/todo/todoSlice";
+import React, { memo, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  updateTodo,
+  deleteTodo,
+  toggleComplete,
+} from "../features/todo/todoSlice";
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
-  
-  if (!todo) return null; // if the todo prop is not provided, return null to prevent rendering errors
+
+  if (!todo) return null;
 
   const [isTodoEditable, setIsTodoEditable] = useState(false);
   const [todoMsg, setTodoMsg] = useState("");
-  useEffect(() => {// useEffect hook to update the todoMsg state variable whenever the todo prop changes. This ensures that the input field for editing the todo item is always in sync with the current text of the todo item.
-    if (todo) {
+
+  useEffect(() => {
+    if (todo && todo.text) {
       setTodoMsg(todo.text);
+    } else if (todo) {
+      setTodoMsg("");
     }
   }, [todo]);
 
-
   const editTodo = () => {
-    dispatch(updateTodo({ id: todo.id, text: todoMsg }));
-    setIsTodoEditable(false);// after dispatching the updateTodo action to save the changes to the todo item, set the isTodoEditable state variable to false to disable editing of the todo item and return it to its normal display mode
+    dispatch(updateTodo({ id: todo._id, text: todoMsg }));
+    setIsTodoEditable(false);
   };
 
   const toggleCompleted = () => {
-    dispatch(toggleComplete(todo.id));
+    dispatch(toggleComplete(todo._id));
   };
 
   return (
     <div
       className={`flex border rounded-lg px-3 py-1.5 gap-x-3 duration-300 text-black ${
-        todo.completed ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"// apply different background colors based on whether the todo item is completed or not
+        todo.completed ? "bg-[#c6e9a7]" : "bg-[#ccbed7]"
       }`}
     >
       {/* Checkbox */}
@@ -52,27 +58,35 @@ function TodoItem({ todo }) {
 
       {/* Edit / Save */}
       <button
-        className={`w-8 h-8 rounded-lg flex justify-center active:border-none items-center bg-gray-50 ${
-          todo.completed ? "cursor-not-allowed opacity-0" : "cursor-pointer hover:bg-gray-100"
+        className={`w-8 h-8 rounded-lg flex justify-center items-center bg-gray-50 ${
+          todo.completed
+            ? "cursor-not-allowed opacity-50"
+            : "cursor-pointer hover:bg-gray-100"
         }`}
         onClick={() => {
           if (todo.completed) return;
 
           if (isTodoEditable) {
-            editTodo();// if the isTodoEditable state variable is true, call the editTodo function to save the changes to the todo item when the edit button is clicked
+            editTodo();
           } else {
-            setIsTodoEditable(true);// set the isTodoEditable state variable to true to enable editing of the todo item when the edit button is clicked
+            setIsTodoEditable(true);
           }
         }}
-        disabled={todo.completed}// disable the edit button if the todo item is completed to prevent editing of completed items
+        disabled={todo.completed}
       >
-        {isTodoEditable ? "📁" : "✏️"}
+        {isTodoEditable ? "💾" : "✏️"}
       </button>
 
       {/* Delete */}
       <button
-        className="w-8 h-8 rounded-lg border-none flex justify-center items-center bg-gray-50"
-        onClick={() => dispatch(removeTodo(todo.id))}
+        className="w-8 h-8 rounded-lg flex justify-center items-center bg-gray-50 hover:bg-red-200"
+        onClick={() => {
+          if (!todo._id) {
+            console.error("Todo ID is missing");
+            return;
+          }
+          dispatch(deleteTodo(todo._id));
+        }}
       >
         ❌
       </button>
@@ -80,4 +94,4 @@ function TodoItem({ todo }) {
   );
 }
 
-export default memo(TodoItem);// memoize the TodoItem component to prevent unnecessary re-renders when the props do not change
+export default memo(TodoItem);

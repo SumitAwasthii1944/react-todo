@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from "react-hook-form"
+import API from "../api/axios";
 import Logo from '../assets/Todo-logo-transparent.png'
 
 function Login() {
@@ -9,16 +10,23 @@ function Login() {
   const [error, setError] = useState("")
 
   // This will run when form submits
-  const onSubmit = (data) => {
-    console.log("Login Data:", data)
+const onSubmit = async (data) => {
+  try {
+    const res = await API.post("/signin", {
+      email: data.email,
+      password: data.password,
+    });
 
-    // Fake frontend login check
-    if (data.email === "test@gmail.com" && data.password === "123456") {
-      navigate("/dashboard")   // redirect after login
-    } else {
-      setError("Invalid email or password")
-    }
+    localStorage.setItem("token", res.data.token);
+    navigate("/");
+    window.location.reload();
+  } catch (err) {
+    alert("Login failed");
   }
+};
+
+
+
 
   return (
     <div className='w-full flex items-center justify-center my-6 px-4'>
@@ -38,7 +46,7 @@ function Login() {
           Don&apos;t have any account?&nbsp;
           <Link
             to="/signup"
-            className="font-medium text-blue-600 hover:underline"
+            className="font-medium text-blue-600 hover:underline "
           >
             Sign Up
           </Link>
