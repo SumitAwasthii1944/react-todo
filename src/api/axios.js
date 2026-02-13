@@ -1,20 +1,8 @@
 import axios from "axios";
 
-const allowedOrigins = [
-  "http://localhost:5173", 
-  "https://react-todo-six-taupe.vercel.app"
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
-}));
+const API = axios.create({
+  baseURL: "https://backend-todo-sbg1.onrender.com", // your backend URL
+});
 
 // Automatically attach token to every request
 API.interceptors.request.use((req) => {
