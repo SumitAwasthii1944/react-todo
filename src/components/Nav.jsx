@@ -143,12 +143,14 @@ function Nav() {
               </Link>
             </>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="block py-2 px-4 hover:text-red-600"
-            >
-              Logout
-            </button>
+            <div className="py-2 px-6 my-7 bg-amber-700">
+              <button
+                onClick={handleLogout}
+                className="block  hover:text-red-700 "
+              >
+                Logout
+              </button>
+            </div>
           )}
         </div>
       )}

@@ -13,6 +13,7 @@ function TodoItem({ todo }) {
 
   const [isTodoEditable, setIsTodoEditable] = useState(false);
   const [todoMsg, setTodoMsg] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (todo && todo.text) {
@@ -29,6 +30,18 @@ function TodoItem({ todo }) {
 
   const toggleCompleted = () => {
     dispatch(toggleComplete(todo._id));
+  };
+  const handleDelete = async () => {
+    if (!todo._id) return;
+
+    try {
+      setDeleting(true);
+      await dispatch(deleteTodo(todo._id));
+    } catch (error) {
+      console.error("Delete failed");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
@@ -80,15 +93,14 @@ function TodoItem({ todo }) {
       {/* Delete */}
       <button
         className="w-8 h-8 rounded-lg flex justify-center items-center bg-gray-50 hover:bg-red-200"
-        onClick={() => {
-          if (!todo._id) {
-            console.error("Todo ID is missing");
-            return;
-          }
-          dispatch(deleteTodo(todo._id));
-        }}
+        onClick={handleDelete}
+        disabled={deleting}
       >
-        ❌
+        {deleting ? (
+          <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+        ) : (
+          "❌"
+        )}
       </button>
     </div>
   );

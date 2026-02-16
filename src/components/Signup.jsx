@@ -8,9 +8,11 @@ function SignUp() {
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm()
   const [error, setError] = useState("")
+  const [loading,setLoading] = useState(false);
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true)  //to start spinner
       const res = await API.post("/signup", data)
 
       localStorage.setItem("token", res.data.token)
@@ -18,6 +20,8 @@ function SignUp() {
       navigate("/signin")   // make sure "/" route exists
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed")
+    } finally{
+      setLoading(false) // to stop spinner
     }
   }
 
@@ -82,9 +86,14 @@ function SignUp() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white p-2 rounded"
+              disabled={loading}
+              className="w-full flex justify-center items-center bg-blue-600 text-white p-2 rounded"
             >
-              Sign up
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                  "Sign up"
+                )}
             </button>
 
           </div>

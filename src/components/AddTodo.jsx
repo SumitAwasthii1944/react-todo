@@ -4,15 +4,22 @@ import { createTodo } from "../features/todo/todoSlice";
 
 function AddTodo() {
   const [input, setInput] = useState("");
+  const [loading,setLoading] =useState(false)
   const dispatch = useDispatch();
 
-  const addTodoHandler = (e) => {
+  const addTodoHandler = async (e) => {
     e.preventDefault();
 
-    if (!input.trim()) return;
-
-    dispatch(createTodo(input));
-    setInput("");
+    try {
+      if (!input.trim()) return;
+      setLoading(true)
+      await dispatch(createTodo(input));
+      setInput("");
+    } catch (error) {
+      alert("adding todo failed")
+    }finally{
+      setLoading(false)
+    }
   };
 
   return (
@@ -30,9 +37,13 @@ function AddTodo() {
 
       <button
         type="submit"
-        className="text-white bg-indigo-500 border-0 py-2 px-5 focus:outline-none hover:bg-indigo-600 rounded text-sm"
+        className="text-white flex justify-center items-center bg-indigo-500 border-0 py-3 px-5 focus:outline-none hover:bg-indigo-600 rounded text-sm"
       >
-        Add Todo
+        {loading ? (
+        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+        ) : (
+          "Add Todo"
+        )}
       </button>
     </form>
   );

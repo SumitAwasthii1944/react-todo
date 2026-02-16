@@ -8,10 +8,12 @@ function Login() {
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm()
   const [error, setError] = useState("")
+  const [loading,setLoading] =useState(false)
 
   // This will run when form submits
 const onSubmit = async (data) => {
   try {
+    setLoading(true)
     const res = await API.post("/signin", {
       email: data.email,
       password: data.password,
@@ -22,6 +24,8 @@ const onSubmit = async (data) => {
     window.location.reload();
   } catch (err) {
     alert("Login failed");
+  }finally{
+    setLoading(false)
   }
 };
 
@@ -78,9 +82,13 @@ const onSubmit = async (data) => {
 
             <button
                 type="submit"
-                className="w-full bg-blue-600 text-white p-2 rounded"
+                className="w-full flex justify-center items-center bg-blue-600 text-white p-2 rounded"
                 >
-                Sign in
+                {loading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                  "Sign in"
+                )}
             </button>
 
 
